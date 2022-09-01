@@ -12,7 +12,9 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(
-        context); /* pegando produto a partir do contexto do provider, ou seja, loadedproducts[i] do product grid  */
+      context,
+      listen: false,
+    ); /* pegando produto a partir do contexto do provider, ou seja, loadedproducts[i] do product grid  */
     return ClipRRect(
       /* para arredondar bordas dos widgets dentro dele */
       borderRadius: BorderRadius.circular(8),
@@ -33,13 +35,16 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black54,
-          leading: IconButton(
-            onPressed: () {
-              product.toggleFavorite();
-            },
-            icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
-            /* para permitir favoritar o produto, caso produto é favorito mostra o icone preenchido, se não, mostra apenas a borda */
-            color: Theme.of(context).colorScheme.secondary,
+          leading: Consumer<Product>(
+            builder: (ctx, product, _) => IconButton(
+              onPressed: () {
+                product.toggleFavorite();
+              },
+              icon: Icon(
+                  product.isFavorite ? Icons.favorite : Icons.favorite_border),
+              /* para permitir favoritar o produto, caso produto é favorito mostra o icone preenchido, se não, mostra apenas a borda */
+              color: Theme.of(context).colorScheme.secondary,
+            ),
           ),
           title: Text(
             product.title,

@@ -20,6 +20,6 @@ class Product with ChangeNotifier {
 
   void toggleFavorite() {
     isFavorite = !isFavorite; /* favorito alternando o valor sempre que chamar o metodo */
-    notifyListeners(); /* para ter reatividade do botão favorito */
+    notifyListeners(); /* para ter reatividade do botão favorito, tudo que usa produto com provider sera notificado desta forma */
   }
 }
