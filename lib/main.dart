@@ -5,6 +5,9 @@ import 'package:shop/pages/product_detail_page.dart';
 import 'package:shop/pages/products_overview_page.dart';
 import 'package:shop/utils/app_routes.dart';
 
+import 'models/cart.dart';
+import 'pages/cart_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -15,24 +18,31 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider( /* envolvendo main com provider, para ter ele a disposição dentro de toda a arvore de componentes */
-      create: (_) => ProductList() ,
+    return MultiProvider(
+      /* envolvendo main com provider, para ter ele a disposição dentro de toda a arvore de componentes */
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ProductList(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Cart(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          
           primarySwatch: Colors.blue,
-           colorScheme: ColorScheme.fromSwatch()
-              .copyWith(secondary: Colors.deepOrange),
-              fontFamily: 'Lato',
+          colorScheme:
+              ColorScheme.fromSwatch().copyWith(secondary: Colors.deepOrange),
+          fontFamily: 'Lato',
         ),
         home: ProductsOverviewPage(),
         routes: {
           AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailPage(),
+          AppRoutes.CART: (ctx) => CartPage(),
         },
         debugShowCheckedModeBanner: false,
       ),
     );
   }
 }
-

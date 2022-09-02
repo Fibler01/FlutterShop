@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/utils/app_routes.dart';
 
+import '../components/badge.dart';
 import '../components/product_grid.dart';
+import '../models/cart.dart';
 
 enum FilterOptions {
   Favorite,
@@ -15,13 +19,10 @@ class ProductsOverviewPage extends StatefulWidget {
 }
 
 class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
-
-  bool _showFavoriteOnly =false;
+  bool _showFavoriteOnly = false;
 
   @override
   Widget build(BuildContext context) {
-    
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -30,7 +31,9 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
         ),
         actions: [
           PopupMenuButton(
-            icon: Icon(Icons.dehaze_rounded),
+            icon: const Icon(
+              Icons.dehaze_rounded,
+            ),
             itemBuilder: (_) => [
               PopupMenuItem(
                 child: Text('Somente favoritos'),
@@ -43,16 +46,27 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
             ],
             onSelected: (FilterOptions selectedValue) {
               setState(() {
-              if(selectedValue == FilterOptions.Favorite) {
-               _showFavoriteOnly = true; 
-              }
-              else {
-                _showFavoriteOnly = false;
-              }
-              print(_showFavoriteOnly);  
+                if (selectedValue == FilterOptions.Favorite) {
+                  _showFavoriteOnly = true;
+                } else {
+                  _showFavoriteOnly = false;
+                }
+                print(_showFavoriteOnly);
               });
-              
             },
+          ),
+          Consumer<Cart>(
+            /* consumer pois apenas essa parte sera atualizada pelo provider */
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.CART);
+              },
+              icon: const Icon(Icons.shopping_cart),
+            ),
+            builder: (ctx, cart, child) => Badge(
+              value: cart.itemsCount.toString(),
+              child: child!,
+            ),
           ),
         ],
       ),

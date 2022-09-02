@@ -3,6 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/models/cart.dart';
 
 import 'package:shop/utils/app_routes.dart';
 
@@ -15,6 +16,11 @@ class ProductItem extends StatelessWidget {
       context,
       listen: false,
     ); /* pegando produto a partir do contexto do provider, ou seja, loadedproducts[i] do product grid  */
+    final cart = Provider.of<Cart>(
+      context,
+      listen: false,
+    );
+
     return ClipRRect(
       /* para arredondar bordas dos widgets dentro dele */
       borderRadius: BorderRadius.circular(8),
@@ -47,11 +53,14 @@ class ProductItem extends StatelessWidget {
             ),
           ),
           title: Text(
-            product.title,
+            product.name,
             textAlign: TextAlign.center,
           ),
           trailing: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              cart.addItem(product);
+             
+            },
             icon: Icon(Icons.shopping_cart),
             color: Theme.of(context).colorScheme.secondary,
           ),
