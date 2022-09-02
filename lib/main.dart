@@ -6,7 +6,9 @@ import 'package:shop/pages/products_overview_page.dart';
 import 'package:shop/utils/app_routes.dart';
 
 import 'models/cart.dart';
+import 'models/order_list.dart';
 import 'pages/cart_page.dart';
+import 'pages/orders_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,10 +24,13 @@ class MyApp extends StatelessWidget {
       /* envolvendo main com provider, para ter ele a disposição dentro de toda a arvore de componentes */
       providers: [
         ChangeNotifierProvider(
-          create: (_) => ProductList(),
+          create: (_) => ProductList(), /* criando instancia de changenotifier */
         ),
         ChangeNotifierProvider(
           create: (_) => Cart(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OrderList(),
         ),
       ],
       child: MaterialApp(
@@ -36,10 +41,12 @@ class MyApp extends StatelessWidget {
               ColorScheme.fromSwatch().copyWith(secondary: Colors.deepOrange),
           fontFamily: 'Lato',
         ),
-        home: ProductsOverviewPage(),
+        /* home: ProductsOverviewPage(), */
         routes: {
+          AppRoutes.HOME: (ctx) => ProductsOverviewPage(),
           AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailPage(),
           AppRoutes.CART: (ctx) => CartPage(),
+          AppRoutes.ORDERS: (ctx) => OrdersPage(),
         },
         debugShowCheckedModeBanner: false,
       ),
