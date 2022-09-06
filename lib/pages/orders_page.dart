@@ -18,7 +18,10 @@ class OrdersPage extends StatelessWidget {
       drawer: AppDrawer(),
       body: ListView.builder(
         itemCount: orders.itemsCount,
-          itemBuilder: (ctx, i) => OrderWidget(order: orders.items[i],)),
+        itemBuilder: (ctx, i) => OrderWidget(
+          order: orders.items[i],
+        ),
+      ),
     );
   }
 }

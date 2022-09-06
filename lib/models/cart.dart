@@ -19,7 +19,8 @@ class Cart with ChangeNotifier {
   double get totalAmount {
     double total = 0.0;
     _items.forEach(
-      (key, cartItem) { /* para cada elemento pega o preço e multiplica pela quantidade de itens desse elemento */
+      (key, cartItem) {
+        /* para cada elemento pega o preço e multiplica pela quantidade de itens desse elemento */
         total += cartItem.price * cartItem.quantity;
       },
     );
@@ -48,6 +49,29 @@ class Cart with ChangeNotifier {
             quantity: 1,
             price: product.price),
       ); /* insere item se nao estiver presente */
+    }
+    notifyListeners();
+  }
+
+  void removeSingleItem(String productId) {
+    if (!_items.containsKey(productId)) {
+      /* se o produto nao esta dentro da lista de produtos */
+      return;
+    }
+    if (_items[productId]?.quantity == 1) {
+      /* se tiver apenas um produto, pode remover o produto inteiro */
+      _items.remove(productId);
+    } else { /* se tiver mais de um produto, remover apenas uma quantidade */
+      _items.update(
+        productId,
+        (existingItem) => CartItem(
+            id: existingItem.id,
+            productId: existingItem.productId,
+            name: existingItem.name,
+            quantity: existingItem.quantity - 1,
+            price: existingItem.price),
+      );
+      
     }
     notifyListeners();
   }

@@ -9,7 +9,7 @@ import 'package:shop/utils/app_routes.dart';
 
 import '../models/product.dart';
 
-class ProductItem extends StatelessWidget {
+class ProductGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(
@@ -58,8 +58,22 @@ class ProductItem extends StatelessWidget {
           ),
           trailing: IconButton(
             onPressed: () {
+              /* Scaffold.of(context).openDrawer(); */ /* procura ate achar o scaffold da tela principal, quando clicar p add novo item ao carrinho, ira abrir um drawer p aquele scaffold */
+              ScaffoldMessenger.of(context)
+                  .hideCurrentSnackBar(); /* escondendo snackbar anterior antes de mostrar o novo */
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(/* abrindo snackbar ao adicionar ao carrinho */
+                      SnackBar(
+                content: Text('Produto adicionado com sucesso!'),
+                duration: Duration(seconds: 2),
+                action: SnackBarAction( /* para uma ação dentro do snackbar */
+                  label: 'DESFAZER',
+                  onPressed: () {
+                    cart.removeSingleItem(product.id);
+                  },
+                ),
+              ));
               cart.addItem(product);
-             
             },
             icon: Icon(Icons.shopping_cart),
             color: Theme.of(context).colorScheme.secondary,
