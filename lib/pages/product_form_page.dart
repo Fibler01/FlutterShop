@@ -239,10 +239,14 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       child: _imageUrlController.text
                               .isEmpty /* se controller estiver vazio mostra texto de informar URL, se nao, mostra a imagem qual o link esta escrito */
                           ? const Text('Informe a Url')
-                          : FittedBox(
-                              child: Image.network(_imageUrlController.text),
-                              fit: BoxFit.cover,
-                            ),
+                          : Container( /* definindo tamanho para nao ter problema com ele ao inserir imagem */
+                            width: 100,
+                            height: 100,
+                            child: FittedBox(
+                                child: Image.network(_imageUrlController.text),
+                                fit: BoxFit.cover,
+                              ),
+                          ),
                     )
                   ],
                 ),
