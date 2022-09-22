@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shop/models/product_list.dart';
 import 'package:shop/utils/app_routes.dart';
 
+import '../exceptions/http_exception.dart';
 import '../models/product.dart';
 
 class ProductItem extends StatelessWidget {
@@ -13,6 +14,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final msg = ScaffoldMessenger.of(context);
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(product.imageUrl),
@@ -33,30 +35,43 @@ class ProductItem extends StatelessWidget {
             IconButton(
               onPressed: () {
                 showDialog<bool>(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text('Excluir Produto?'),
-            content: Text('Tem certeza que deseja excluir o produto?'),
-            actions: [
-              TextButton(onPressed: () {
-                Navigator.of(ctx).pop(false); /* passando contexto recebido como resposta do alertdialog */
-              }, child: Text('Não')),
-              TextButton(onPressed: () { /* excluindo produto caso clicar em sim */
-                Navigator.of(ctx).pop(true); 
-                
-              }, child: Text('Sim'), /* retorna verdade caso sim */
-              ),
-            ],
-          ),
-        ).then((value) { /* passando valor do booleano do showDialog */
-          if(value ?? false){
-          Provider.of<ProductList>(
-                  context,
-                  listen: false,
-                ).removeProduct(product);
-          }
-        });
-                
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text('Excluir Produto?'),
+                    content: Text('Tem certeza que deseja excluir o produto?'),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop(
+                                false); /* passando contexto recebido como resposta do alertdialog */
+                          },
+                          child: Text('Não')),
+                      TextButton(
+                        onPressed: () {
+                          /* excluindo produto caso clicar em sim */
+                          Navigator.of(ctx).pop(true);
+                        },
+                        child: Text('Sim'), /* retorna verdade caso sim */
+                      ),
+                    ],
+                  ),
+                ).then((value) async {
+                  /* passando valor do booleano do showDialog */
+                  if (value ?? false) {
+                    try {
+                      await Provider.of<ProductList>(
+                        context,
+                        listen: false,
+                      ).removeProduct(product);
+                    } on HttpException catch (error) {
+                      msg.showSnackBar(
+                        SnackBar(
+                          content: Text(error.toString()),
+                        ),
+                      );
+                    }
+                  }
+                });
               },
               icon: Icon(Icons.delete),
               color: Theme.of(context).errorColor,

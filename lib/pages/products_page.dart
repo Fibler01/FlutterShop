@@ -11,6 +11,11 @@ import '../models/product_list.dart';
 class ProductsPage extends StatelessWidget {
   const ProductsPage({Key? key}) : super(key: key);
 
+  Future<void> _refreshProducts(BuildContext context) {
+    /* funcao p dar refresh na pagina chamando o metodo loadproducts */
+    return Provider.of<ProductList>(context, listen: false).loadProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ProductList products =
@@ -18,25 +23,30 @@ class ProductsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Gerenciar produtos'),
+        title: const Text('Gerenciar produtos'),
         actions: [
-          IconButton(onPressed: () {
-            Navigator.of(context).pushNamed(AppRoutes.PRODUCT_FORM);
-          }, icon: Icon(Icons.add))
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.PRODUCT_FORM);
+              },
+              icon: const Icon(Icons.add))
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
       /* chamando appdrawer p conseguir voltar para loja */
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ListView.builder(
-          itemCount: products.itemsCount,
-          /* pegando quantidade de produtos */
-          itemBuilder: (ctx, i) => Column(
-            children: [
-              ProductItem(product: products.items[i]),
-              Divider(), /* colocando divisor entre cada produto de gerenciar produtos */
-            ],
+      body: RefreshIndicator( /* adicionando função de ao arrastar p cima atualizar */
+        onRefresh: () => _refreshProducts(context),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: ListView.builder(
+            itemCount: products.itemsCount,
+            /* pegando quantidade de produtos */
+            itemBuilder: (ctx, i) => Column(
+              children: [
+                ProductItem(product: products.items[i]),
+                const Divider(), /* colocando divisor entre cada produto de gerenciar produtos */
+              ],
+            ),
           ),
         ),
       ),
