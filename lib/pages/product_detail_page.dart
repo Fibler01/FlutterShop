@@ -22,6 +22,7 @@ class ProductDetailPage extends StatelessWidget {
           child: Column(
         children: [
           Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8.0),
             height: 300,
             width: double.infinity,
             /* para ocupar largura inteira */

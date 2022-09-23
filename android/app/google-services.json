@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "182728330349",
+    "firebase_url": "https://shop-joao-default-rtdb.firebaseio.com",
+    "project_id": "shop-joao",
+    "storage_bucket": "shop-joao.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182728330349:android:8c649f04f2d5a0cf42c364",
+        "android_client_info": {
+          "package_name": "com.example.shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "182728330349-hfibbr47m4ghep66q59oigon1pnr868t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm2aSh1lEFHqS7oBiACpaKQyhl4QLOZTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182728330349-hfibbr47m4ghep66q59oigon1pnr868t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

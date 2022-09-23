@@ -53,20 +53,7 @@ class CartPage extends StatelessWidget {
                   ),
                   Spacer(),
                   /* para jogar valor mais proximo do "total"  */
-                  TextButton(
-                    onPressed: () {
-                      Provider.of<OrderList>(context, listen: false).addOrder(
-                          cart); /* criando um novo pedido a partir do carrinho */
-
-                          cart.clear(); /* limpando carrinho após a compra */
-                    },
-                    child: Text('COMPRAR'),
-                    style: TextButton.styleFrom(
-                      textStyle: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  ),
+                  CartButton(cart: cart),
                 ],
               ),
             ),
@@ -78,6 +65,48 @@ class CartPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CartButton extends StatefulWidget {
+  const CartButton({
+    Key? key,
+    required this.cart,
+  }) : super(key: key);
+
+  final Cart cart;
+
+  @override
+  State<CartButton> createState() => _CartButtonState();
+}
+
+class _CartButtonState extends State<CartButton> {
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return _isLoading ? CircularProgressIndicator() : TextButton(
+      onPressed: widget.cart.itemsCount == 0 ? null : () async { /* se n tiver produtos no carrinho, nao habilita botao comprar */
+      setState(() {
+        _isLoading=true;
+      });
+        await Provider.of<OrderList>(context, listen: false).addOrder( /* so limpa o carrinho depois de ter processado pedido com await */
+            widget.cart); /* criando um novo pedido a partir do carrinho */
+
+            
+
+            widget.cart.clear(); /* limpando carrinho após a compra */
+            setState(() { /* loading acabou */
+        _isLoading=false;
+      });
+      },
+      child: Text('COMPRAR'),
+      style: TextButton.styleFrom(
+        textStyle: TextStyle(
+          color: Theme.of(context).primaryColor,
+        ),
       ),
     );
   }
